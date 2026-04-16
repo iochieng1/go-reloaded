@@ -35,6 +35,7 @@ func processText(text string) string {
 	words := strings.Fields(text)
 
 	words = handleHexBin(words)
+	words = handleCase(words)
 	
 
 	return strings.Join(words, " ")
