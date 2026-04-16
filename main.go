@@ -40,3 +40,34 @@ func processText(text string) string {
 	return strings.Join(words, " ")
 
 }
+
+func handleHexBin(words []string) []string {
+	result := []string {}
+
+	for j := 0 ; j < len(words); j ++ {
+		if words [j] == "(hex)" && len(result) > 0 {
+			prev := result [len(result)-1]
+
+			value, err := strconv.ParseInt(prev, 16, 64)
+			if err == nil {
+				result[len(result)-1] = fmt.Sprintf("%d", value)
+			}
+			continue
+		}
+
+	if words [j] == "(bin)" && len(result) > 0 {
+		prev := result [len(result)-1]
+
+		value, err := strconv.ParseInt(prev, 2, 64)
+		if err == nil {
+			result[len(result)-1] = fmt.Sprintf("%d", value)
+		}
+		continue
+	}
+	
+	result = append(result, words[j])
+
+	}
+
+	return result
+}
