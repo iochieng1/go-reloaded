@@ -104,3 +104,16 @@ func handleCase(words []string) []string {
 
 	return result
 }
+
+func getCount(token string) int {
+	token = string.Trim(token, "()")
+	parts := strings.Split(token, ",")
+
+	if len(parts) == 2 {
+		n, err := strconv.Atoi(strings.TrimSpace(parts[1]))
+		if err == nil {
+			return n
+		}
+		return 1
+	}
+}
