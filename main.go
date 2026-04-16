@@ -72,3 +72,35 @@ func handleHexBin(words []string) []string {
 
 	return result
 }
+
+func handleCase(words []string) []string {
+	result := []string{}
+
+	for j := 0; j < len(words); j++ {
+
+		if words[j] == "(up)" && len(result) > 0 {
+			result[len(result)-1] =
+				strings.ToUpper(result[len(result)-1])
+			continue
+		}
+
+		if words[j] == "(low)" && len(result) > 0 {
+			result[len(result)-1] =
+				strings.ToLower(result[len(result)-1])
+			continue
+		}
+
+		if words[j] == "(cap)" && len(result) > 0 {
+			word := result[len(result)-1]
+
+			result[len(result)-1] =
+				strings.ToUpper(string(word[0])) +
+					strings.ToLower(word[1:])
+			continue
+		}
+
+		result = append(result, words[j])
+	}
+
+	return result
+}
