@@ -24,7 +24,7 @@ func main() {
 
     result := processText(string(content))
 
-    err = os.WriteFile(outputFile, []byte(result), 0644)
+    err = os.WriteFile(outputFile, []byte(result + "\n"), 0644)
     if err != nil {
 	    fmt.Println(err)
 	    return
@@ -92,10 +92,51 @@ func handleCase(words []string) []string {
 
 		if words[j] == "(cap)" && len(result) > 0 {
 			word := result[len(result)-1]
-
 			result[len(result)-1] =
 				strings.ToUpper(string(word[0])) +
 					strings.ToLower(word[1:])
+			continue
+		}
+
+		if words[j] == "(up," && j+1 < len(words) {
+			n, err := strconv.Atoi(strings.TrimRight(words[j+1], ")"))
+			if err == nil {
+				for k := len(result) - n; k < len(result); k++ {
+					if k >= 0 {
+						result[k] = strings.ToUpper(result[k])
+					}
+				}
+			}
+			j++
+			continue
+		}
+
+		if words[j] == "(low," && j+1 < len(words) {
+			n, err := strconv.Atoi(strings.TrimRight(words[j+1], ")"))
+			if err == nil {
+				for k := len(result) - n; k < len(result); k++ {
+					if k >= 0 {
+						result[k] = strings.ToLower(result[k])
+					}
+				}
+			}
+			j++
+			continue
+		}
+
+		if words[j] == "(cap," && j+1 < len(words) {
+			n, err := strconv.Atoi(strings.TrimRight(words[j+1], ")"))
+			if err == nil {
+				for k := len(result) - n; k < len(result); k++ {
+					if k >= 0 {
+						word := result[k]
+						result[k] =
+							strings.ToUpper(string(word[0])) +
+								strings.ToLower(word[1:])
+					}
+				}
+			}
+			j++
 			continue
 		}
 
@@ -106,7 +147,7 @@ func handleCase(words []string) []string {
 }
 
 func getCount(token string) int {
-	token = string.Trim(token, "()")
+	token = strings.Trim(token, "()")
 	parts := strings.Split(token, ",")
 
 	if len(parts) == 2 {
@@ -114,6 +155,6 @@ func getCount(token string) int {
 		if err == nil {
 			return n
 		}
-		return 1
 	}
+	return 1
 }
