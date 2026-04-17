@@ -165,3 +165,41 @@ func getCount(token string) int {
 	}
 	return 1
 }
+
+func fixGroupedPunct(text string) string {
+	text = strings.ReplaceAll(text, " ...", "...")
+	text = strings.ReplaceAll(text, "...", "...")
+	text = strings.ReplaceAll(text, " !?", "!?")
+	return text
+}
+
+func fixArticles(words []string) []string {
+	for i := 0; i < len(words)-1; i++ {
+		if words[i] == "a" {
+			next := strings.ToLower(words[i+1])
+			if len(next) > 0 && strings.ContainsRune("aeiouh", rune(next[0])) {
+				words[i] = "an"
+			}
+		}
+	}
+	return words
+}
+
+func handlePunctuation(text string) string {
+	text = strings.ReplaceAll(text, " ,", ",")
+	text = strings.ReplaceAll(text, " .", ".")
+	text = strings.ReplaceAll(text, " !", "!")
+	text = strings.ReplaceAll(text, " ?", "?")
+	text = strings.ReplaceAll(text, " :", ":")
+	text = strings.ReplaceAll(text, " ;", ";")
+
+	return text
+}
+
+func fixQuotes(text string) string {
+	text = strings.ReplaceAll(text, " ' ", "'")
+	text = strings.ReplaceAll(text, "' ", "'")
+	text = strings.ReplaceAll(text, " '", "'")
+	return text
+}
+
