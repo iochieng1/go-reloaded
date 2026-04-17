@@ -32,13 +32,20 @@ func main() {
 }
 
 func processText(text string) string {
+	text = fixGroupedPunct(text)
+
 	words := strings.Fields(text)
 
 	words = handleHexBin(words)
 	words = handleCase(words)
-	
+	words = fixArticles(words)
 
-	return strings.Join(words, " ")
+	text = strings.Join(words, " ")
+
+	text = handlePunctuation(text)
+	text = fixQuotes(text)
+
+	return text
 
 }
 
