@@ -7,6 +7,9 @@ import (
 	"strings"
 )
 
+// main reads input file, processes the text,
+// and writes the transformed output to a file.
+
 func main() {
 	if len (os.Args) != 3 {
 		fmt.Println("Usage: go run . input.txt output. txt")
@@ -31,6 +34,11 @@ func main() {
     }
 }
 
+// processText is the main transformation pipeline.
+// It applies grouped punctuation fixes, splits text into words,
+// applies hex/bin conversion, case transformations, article correction,
+// then rebuilds the string and fixes punctuation and quotes.
+
 func processText(text string) string {
 	text = fixGroupedPunct(text)
 
@@ -48,6 +56,10 @@ func processText(text string) string {
 	return text
 
 }
+
+// handleHexBin scans for (hex) and (bin) tokens.
+// It converts the previous word from hexadecimal or binary
+// into its decimal representation.
 
 func handleHexBin(words []string) []string {
 	result := []string {}
@@ -79,6 +91,10 @@ func handleHexBin(words []string) []string {
 
 	return result
 }
+
+// handleCase processes case transformation tags:
+// (up), (low), (cap) and multi-word versions like (up, 2).
+// It modifies the previously added words accordingly.
 
 func handleCase(words []string) []string {
 	result := []string{}
@@ -166,12 +182,19 @@ func getCount(token string) int {
 	return 1
 }
 
+// fixGroupedPunct handles grouped punctuation such as
+// "..." and "!?" so they remain attached correctly
+// before further punctuation processing.
+
 func fixGroupedPunct(text string) string {
 	text = strings.ReplaceAll(text, " ...", "...")
 	text = strings.ReplaceAll(text, "...", "...")
 	text = strings.ReplaceAll(text, " !?", "!?")
 	return text
 }
+
+// fixArticles converts "a" to "an" when the next word
+// begins with a vowel or 'h', according to project rules.
 
 func fixArticles(words []string) []string {
 	for i := 0; i < len(words)-1; i++ {
@@ -185,6 +208,9 @@ func fixArticles(words []string) []string {
 	return words
 }
 
+// handlePunctuation removes spaces before punctuation
+// characters and ensures correct spacing after them.
+
 func handlePunctuation(text string) string {
 	text = strings.ReplaceAll(text, " ,", ",")
 	text = strings.ReplaceAll(text, " .", ".")
@@ -195,6 +221,9 @@ func handlePunctuation(text string) string {
 
 	return text
 }
+
+// fixQuotes removes unnecessary spaces inside single quotes
+// and ensures quoted text is formatted correctly.
 
 func fixQuotes(text string) string {
 	text = strings.ReplaceAll(text, " ' ", "'")
